@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 100 125"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg16"
+   sodipodi:docname="noun_Clone Trooper_3402211.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata22">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs20" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1870"
+     inkscape:window-height="1016"
+     id="namedview18"
+     showgrid="false"
+     inkscape:zoom="1.888"
+     inkscape:cx="44.253497"
+     inkscape:cy="62.5"
+     inkscape:window-x="50"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg16" />
+  <title
+     id="title2">i-10</title>
+  <g
+     data-name="Lego Bricks"
+     id="g10"
+     transform="matrix(1.3867021,0,0,1.3867021,-18.856692,-6.8351044)"
+     style="fill:#ffffff">
+    <path
+       d="M 82.88,45.33 A 30.1,30.1 0 0 0 23.41,45.2 5.21,5.21 0 0 0 23,47.2 v 35.67 l 19.18,9.6 V 69.18 c 0,-8.82 -2.92,-11 -8.21,-11 -3.68,0 -8.22,-8.22 -8.22,-13.69 0,-2.66 25.71,-2.75 27.4,-2.75 1.69,0 27.4,0.11 27.4,2.75 0,5.36 -4.55,13.69 -8.22,13.69 -5.41,0 -8.24,2.31 -8.24,11 v 23.29 l 19.18,-9.6 V 47.25 a 5,5 0 0 0 -0.39,-1.92 z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff" />
+    <path
+       d="M 75.05,50 A 2.75,2.75 0 0 0 72.33,47.25 H 34 a 2.75,2.75 0 0 0 0,5.5 c 8,0 13.68,4.86 13.68,13.68 v 27.4 h 11 v -27.4 c 0,-8.64 5.56,-13.68 13.71,-13.68 A 2.75,2.75 0 0 0 75.05,50 Z"
+       id="path6"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff" />
+    <polygon
+       points="16.04,6.17 16.04,14.38 16.04,82.88 21.52,82.88 21.52,12.56 32.48,8.91 32.48,6.17 21.52,6.17 "
+       id="polygon8"
+       style="fill:#ffffff" />
+  </g>
+</svg>

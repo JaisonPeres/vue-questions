@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  grancursos:
+    container_name: questions
+    build:
+      context: .
+      target: base
+    volumes:
+      - ./src:/app/src
+      - ./static:/app/static
+      - ./package.json:/app/package.json:z
+      - ./quasar.conf.js:/app/quasar.conf.js
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
