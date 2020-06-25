@@ -10,8 +10,8 @@
           @click="leftDrawerOpen = !leftDrawerOpen")
         q-toolbar-title.q-pa-sm
           q-item.title-item
-            q-item-section(side).gran-logo-toolbar
-              gran-logo.q-mr-sm
+            q-item-section(side)
+              gran-logo(min)
             q-item-section {{$route.meta.title}}
         user-popup
     menu-drawer(
