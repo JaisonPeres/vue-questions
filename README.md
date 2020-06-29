@@ -6,6 +6,10 @@ A Quasar Framework app
 ```bash
 docker-compose up
 ```
+## Install Quasar CLI
+```bash
+npm install -g @quasar/cli
+```
 
 ## Install the dependencies
 ```bash
