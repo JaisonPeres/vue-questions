@@ -1,6 +1,7 @@
 <template lang="pug">
 q-drawer(
   v-model="value"
+  @hide="$emit('input', value)"
   show-if-above
   :mini="mini"
   bordered)

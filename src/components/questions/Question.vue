@@ -11,39 +11,15 @@
               q-item-label {{detail.value}}
         q-item-section
         q-item-section(side)
-          q-item.no-padding
-            q-item-section(side)
-              q-btn(flat round dense icon="question_answer" color="primary")
-                q-tooltip(transition-show="scale" transition-hide="scale" content-class="bg-primary text-subtitle2") Comentários
-            q-item-section(side)
-              q-btn(flat round dense icon="note" color="yellow-8")
-                q-tooltip(transition-show="scale" transition-hide="scale" content-class="bg-yellow-8 text-black text-subtitle2") Anotações
-            q-item-section(side)
-              q-btn(flat round dense icon="equalizer" color="info")
-                q-tooltip(transition-show="scale" transition-hide="scale" content-class="bg-info text-black text-subtitle2") Estatísticas
-            q-item-section(side)
-              q-btn(flat round dense icon="error_outline" color="negative")
-                q-tooltip(transition-show="scale" transition-hide="scale" content-class="bg-negative text-subtitle2") Reportar Erro
+          question-details
       q-item(v-else)
         q-item-section(side) # {{index}}
         q-item-section
           q-item-label {{filter(question.details, dt => dt.slug === 'area')[0].value}} - {{filter(question.details, dt => dt.slug === 'year')[0].value}}
-        q-imte-section(side)
-          q-btn(flat round dense icon="question_answer" color="primary")
-            q-tooltip(transition-show="scale" transition-hide="scale" content-class="bg-primary text-subtitle2") Comentários
         q-item-section(side)
           q-btn(icon="more_vert" flat round dense)
             q-menu
-              q-item
-                q-item-section
-                  q-btn(flat round dense icon="note" color="yellow-8")
-                    q-tooltip(transition-show="scale" transition-hide="scale" content-class="bg-yellow-8 text-black text-subtitle2") Anotações
-                q-item-section
-                  q-btn(flat round dense icon="equalizer" color="info")
-                    q-tooltip(transition-show="scale" transition-hide="scale" content-class="bg-info text-black text-subtitle2") Estatísticas
-                q-item-section
-                  q-btn(flat round dense icon="error_outline" color="negative")
-                    q-tooltip(transition-show="scale" transition-hide="scale" content-class="bg-negative text-subtitle2") Reportar Erro
+              question-details
               q-separator
               q-list(separator)
                 q-item(v-for="(detail, dt) in question.details" :key="dt")
@@ -52,6 +28,7 @@
                     q-item-label {{detail.value}}
     q-separator
     q-card-section {{question.description}}
+    q-separator
     q-card-section(v-if="question.options").no-padding
       q-list.q-gutter-sm
         q-item(
@@ -66,9 +43,11 @@
 </template>
 <script>
 import { filter } from 'lodash'
+import QuestionDetails from './QuestionDetails'
 export default {
   name: 'Question',
   components: {
+    QuestionDetails
   },
   props: {
     question: Object,

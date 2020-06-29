@@ -2,7 +2,7 @@
   q-page.relative-position
     q-scroll-area.scroll-page(@scroll="fireScroll" ref="scrollPage")
       .top(ref="questionTop")
-      .q-pa-md
+      .q-pa-md(v-if="!loading")
         question(
           v-for="(question, qs) in questions"
           :key="qs" :index="qs + 1"
@@ -14,7 +14,7 @@
           enter-active-class="animated fadeInUp"
           leave-active-class="animated fadeOutDown")
           q-btn(color="grey-8" @click="toTop()" v-if="toTopShow" round icon="keyboard_arrow_up")
-    filter-questions(v-model="filter" :count="questions.length")
+    filter-questions(:count="questions.length")
     q-inner-loading(:showing="loading" :class="$q.dark.isActive ? 'bg-dark' : 'bg-white'")
       q-spinner(size="50px" color="primary" :thickness="2")
 </template>
@@ -40,9 +40,6 @@ export default {
     }
   },
   created () {
-    setTimeout(() => {
-      this.filter = true
-    }, 200)
     setTimeout(() => {
       this.loading = false
     }, 1600)

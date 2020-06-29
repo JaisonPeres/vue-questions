@@ -1,14 +1,14 @@
 <template lang="pug">
 .filter-questions
   q-page-sticky(position="bottom-right" :offset="[18, 18]")
-    q-btn(color="primary" @click="openDialog(!value)" fab)
-      q-icon.animated(:name="value ? 'close' : 'filter_list'" :class="value ? 'rotate-90' : null")
+    q-btn(color="primary" @click="filterDialog = !filterDialog" fab)
+      q-icon.animated(:name="filterDialog ? 'close' : 'filter_list'" :class="filterDialog ? 'rotate-90' : null")
       q-badge.dot-badge(floating color="blue-5" v-if="count > 0")
         .text-center.full-width {{count <= 9 ? count : '+9'}}
   q-dialog(
     content-class="filter-dialog"
     no-esc-dismiss no-backdrop-dismiss
-    v-model="value"
+    v-model="filterDialog"
     @hide.passive="openDialog(false)"
     :seamless="!$q.platform.is.mobile && seamlessFilter"
     :position="$q.platform.is.mobile ? undefined : 'right'"
@@ -19,6 +19,27 @@
           q-item-section
             .text-subtitle1(v-if="count > 0") {{count > 1 ? count + ' Questões encontradas' : '1 Questão encontrada'}}
             .text-subtitle1(v-else) Nenhuma Questão encontrada
+          q-item-section(side)
+            q-btn(flat round icon="save")
+              q-badge(floating v-if="saveFilters.length") {{saveFilters.length}}
+              q-menu
+                q-item.no-padding
+                  q-item-section
+                    q-input(v-model="newFilterName" label="Salvar filtro" filled)
+                      template(v-slot:append)
+                        q-btn(icon="add" @click="newFilterName ? saveFilter() : null" flat round)
+                q-item(v-if="saveFilters.length")
+                  q-item-section
+                    q-item-label(caption) Filtros salvos
+                q-list(separator v-if="saveFilters.length")
+                  q-item(v-for="(saveFilter, sf) in saveFilters" :key="sf")
+                    q-item-section {{saveFilter.label}}
+                    q-item-section(side)
+                      q-btn(@click="openLocalFilter(saveFilter.filter)" icon="check" flat round dense)
+                    q-item-section(side)
+                      q-btn(@click="removeLocalFilter(sf)" icon="delete_outline" flat round dense)
+              q-tooltip
+                .text-subtitle2 Salvar Filtro
           q-item-section(side)
             q-btn(flat round icon="question_answer")
               q-menu
@@ -39,41 +60,56 @@
                   q-item(v-for="(setting, st) in settings.questions" :key="st")
                     q-item-section
                       q-toggle(:label="setting.label" v-model="setting.value")
+          q-item-section(side)
+            q-btn(icon="more_vert" dense flat round)
+              q-menu
+                q-list
+                  q-item(v-if="$q.platform.is.desktop")
+                    q-item-section
+                      q-toggle(label="Filtrar e ver resultado" v-model="seamlessFilter" icon="bolt" color="orange")
+                        q-tooltip(:delay="600")
+                          .text-subtitle2 Se ligado, exibe e permite que você resolva questões com o filtro aberto
+                  q-item
+                    q-item-section
+                      q-toggle(label="Iniciar com filtro" v-model="showFilter" icon="add" color="primary")
+                        q-tooltip(:delay="600")
+                          .text-subtitle2 Se ligado, faz com que a página de questões sempre inicie com o filtro aberto
       q-separator
       q-card-section.no-padding
         q-scroll-area.filter-scroll
           .q-pa-md
             .row
-              .col-md-12.col-xs-12
-                q-input.q-ma-sm(filled label="Disciplinas e Assuntos")
-              .col-md-6.col-xs-12
-                q-select.q-ma-sm(filled label="Banca" :options="options" v-model="option")
-              .col-md-6.col-xs-12
-                q-select.q-ma-sm(filled label="Órgão" :options="options" v-model="option")
-              .col-md-6.col-xs-12
-                q-select.q-ma-sm(filled label="Ano" :options="options" v-model="option")
-              .col-md-6.col-xs-12
-                q-select.q-ma-sm(filled label="Cargo" :options="options" v-model="option")
-              .col-md-6.col-xs-12
-                q-select.q-ma-sm(filled label="Nível" :options="options" v-model="option")
-              .col-md-6.col-xs-12
-                q-select.q-ma-sm(filled label="Tipo de questão" :options="options" v-model="option")
+              .col(v-for="(field, fd) in filter" :key="fd" :class="'col-xs-12 ' + 'col-md-' + field.size")
+                q-select.q-ma-sm(
+                  v-if="field.options"
+                  :label="field.label"
+                  v-model="field.value"
+                  :options="field.options"
+                  option-value="value"
+                  option-label="label"
+                  map-options
+                  emit-value
+                  filled)
+                q-input.q-ma-sm(
+                  v-else
+                  :label="field.label"
+                  v-model="field.value"
+                  filled)
       q-separator
       q-card-section.no-padding
         q-item
-          q-item-section(side)
-            q-toggle(label="Filtrar e Resolver" left-label v-model="seamlessFilter" icon="bolt" color="orange")
           q-item-section
           q-item-section(side)
-            q-btn(flat @click="openDialog(false)" label="cancelar" color="grey")
+            q-btn(flat @click="filterDialog = false" label="cancelar" color="grey")
           q-item-section(side)
-            q-btn(unelevated @click="openDialog(false)" label="filtrar" color="primary")
+            q-btn(unelevated @click="filterDialog = false" label="filtrar" color="primary")
 </template>
 <script>
+// import { filter } from 'lodash'
+import filterData from '../../data/filter'
 export default {
   name: 'FilterQuestions',
   props: {
-    value: Boolean,
     count: Number
   },
   data () {
@@ -81,7 +117,12 @@ export default {
       open: false,
       option: null,
       allquestions: false,
-      seamlessFilter: true,
+      filterDialog: true,
+      showFilter: true,
+      seamlessFilter: this.$q.localStorage.getItem('seamless_filter') || false,
+      newFilterName: null,
+      saveFilters: [],
+      filter: [],
       settings: {
         questions: [
           {
@@ -112,30 +153,81 @@ export default {
             value: true
           }
         ]
-      },
-      options: [
-        {
-          label: 'opt 1',
-          value: 'opt 1'
-        },
-        {
-          label: 'opt 2',
-          value: 'opt 2'
-        },
-        {
-          label: 'opt 3',
-          value: 'opt 3'
-        },
-        {
-          label: 'opt 4',
-          value: 'opt 4'
-        }
-      ]
+      }
     }
   },
+  watch: {
+    seamlessFilter () {
+      this.$q.localStorage.set('seamless_filter', this.seamlessFilter)
+    },
+    showFilter () {
+      this.$q.localStorage.set('show_filter', this.showFilter)
+    }
+  },
+  created () {
+    this.showFilter = this.$q.localStorage.getItem('show_filter')
+    this.showFilter = this.showFilter === null ? true : this.showFilter
+    this.filterDialog = this.showFilter
+    this.filter = filterData()
+    this.loadLocalFilter()
+  },
   methods: {
+    parseLocalStorage (str) {
+      return JSON.parse(JSON.stringify(str))
+    },
+    loadLocalFilter () {
+      let localFilter = this.$q.localStorage.getItem('filter') || []
+      localFilter = this.parseLocalStorage(localFilter)
+      this.saveFilters = localFilter
+    },
+    openLocalFilter (localFilterData) {
+      // this.filter = this.filter.map((item) => {
+      //   const matchItem = filter(localFilterData, (localItem) => {
+      //     if (localItem.slug === item.field) {
+      //       return {
+      //         ...item,
+      //         value: localItem.value || null
+      //       }
+      //     } else {
+      //       return item
+      //     }
+      //   })[0]
+      //   console.log(matchItem.value)
+      //   return matchItem
+      // })
+    },
     openDialog (status = true) {
       this.$emit('input', status)
+    },
+    removeLocalFilter (index) {
+      let localFilter = this.$q.localStorage.getItem('filter')
+      localFilter = this.parseLocalStorage(localFilter)
+      if (localFilter && localFilter.length) {
+        if (localFilter.length > 1) {
+          localFilter.splice(index, 1)
+        } else {
+          localFilter = []
+        }
+        this.$q.localStorage.set('filter', localFilter)
+      }
+      this.loadLocalFilter()
+    },
+    saveFilter () {
+      const filter = this.filter.map((item) => {
+        return {
+          slug: item.field,
+          value: item.value
+        }
+      })
+      let localFilter = this.$q.localStorage.getItem('filter') || []
+      localFilter = this.parseLocalStorage(localFilter)
+      localFilter.push({
+        label: this.newFilterName,
+        filter: filter
+      })
+      this.$q.localStorage.set('filter', localFilter)
+      this.loadLocalFilter()
+      this.newFilterName = null
     }
   }
 }

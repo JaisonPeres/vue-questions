@@ -4,6 +4,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
+      { path: '', redirect: '/questoes' },
       {
         path: '/provas',
         component: () => import('pages/Provas.vue'),
