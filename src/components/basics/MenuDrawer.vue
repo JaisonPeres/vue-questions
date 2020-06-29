@@ -1,8 +1,6 @@
 <template lang="pug">
 q-drawer(
-  v-model="open"
-  @show="$emit('show')"
-  @hide="$emit('hide')"
+  v-model="value"
   show-if-above
   :mini="mini"
   bordered)
@@ -53,10 +51,7 @@ export default {
   },
   props: {
     menu: Array,
-    open: {
-      type: Boolean,
-      default: true
-    }
+    value: Boolean
   },
   data () {
     return {

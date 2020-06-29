@@ -8,8 +8,8 @@ q-btn(flat round icon="person")
             q-avatar(size="60px").shadow-3
               img(src="https://thispersondoesnotexist.com/image")
           q-item-section
-            q-item-label User
-            q-item-label(caption) user@email.com
+            q-item-label Stuart
+            q-item-label(caption) stuart@email.com
       q-card-section.no-padding
         q-item.no-padding(style="min-height: 20px")
           q-item-section.no-margin

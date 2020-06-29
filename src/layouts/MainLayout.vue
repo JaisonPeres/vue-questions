@@ -16,9 +16,7 @@
         user-popup
     menu-drawer(
       :menu="menu"
-      :open="leftDrawerOpen"
-      @show="leftDrawerOpen = true"
-      @hide="leftDrawerOpen = false")
+      v-model="leftDrawerOpen")
     q-page-container(:class="!$q.dark.isActive ? 'bg-grey-3': null")
       router-view
 </template>
@@ -40,7 +38,7 @@ export default {
 
   data () {
     return {
-      leftDrawerOpen: true,
+      leftDrawerOpen: !this.$q.platform.is.mobile,
       menu: [
         {
           title: 'Provas',
