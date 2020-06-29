@@ -1,17 +1,20 @@
-# Quasar App (quasar-test)
-
-A Quasar Framework app
+# Vue Questions
 
 ## Run with Docker
 ```bash
 docker-compose up
 ```
-## Install Quasar CLI
+
+## OR
+
+## Run with Quasar CLI
+
+### Install Quasar CLI
 ```bash
 npm install -g @quasar/cli
 ```
 
-## Install the dependencies
+### Install the dependencies
 ```bash
 npm install
 ```
@@ -21,12 +24,12 @@ npm install
 quasar dev
 ```
 
-### Lint the files
+#### Lint the files
 ```bash
 npm run lint
 ```
 
-### Build the app for production
+#### Build the app for production
 ```bash
 quasar build
 ```
